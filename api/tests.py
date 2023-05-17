@@ -1,19 +1,30 @@
 from django.test import TestCase, Client
 
+from api.models import Point
+
 
 class ProcessGridPointsAPITest(TestCase):
     def setUp(self):
         self.client = Client()
 
     def test_process_grid_points(self):
+        # test data
         data = {"points": "2,2;-1,30;20,11;4,5"}
 
+        # make POST request to the view
         response = self.client.post("/api/process-grid-points/", data=data)
 
+        # assert response status code and message
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data, {"message": "Grid points processed successfully"}
         )
+
+        # assert that the Point instances were created in the DB
+        point_count = Point.objects.filter(
+            x__in=[2, -1, 20, 4], y__in=[2, 30, 11, 5]
+        ).count()
+        self.assertEqual(point_count, 4)
 
     def test_process_malformed_grid_points(self):
         data = {"points": "2,2;-1,30;20,11;4"}  # missing coordinate for one point
