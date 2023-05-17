@@ -26,6 +26,16 @@ class ProcessGridPointsAPITest(TestCase):
         ).count()
         self.assertEqual(point_count, 4)
 
+        # retrieve one of the created points
+        point1 = Point.objects.get(x=2, y=2)
+
+        # call closest_point method to retrieve the closest point
+        closest_point = point1.closest_point()
+
+        # assert that the closest point is as expected
+        expected_closest_point = Point.objects.get(x=4, y=5)
+        self.assertEqual(closest_point, expected_closest_point)
+
     def test_process_malformed_grid_points(self):
         data = {"points": "2,2;-1,30;20,11;4"}  # missing coordinate for one point
 

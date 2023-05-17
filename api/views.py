@@ -28,8 +28,8 @@ def process_grid_points(request):
             Point.objects.bulk_create(all_points)
 
             for point in all_points:
-                closest_point = point.closest_point()
-                point.closest_point.set(closest_point)
+                point.closest_point = point.closest_point()
+                point.save()
 
             return Response({"message": "Grid points processed successfully"})
     else:
