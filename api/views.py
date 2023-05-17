@@ -23,7 +23,14 @@ def process_grid_points(request):
                 if len(coordinates) != 2:
                     return Response({"error", "Malformed points"}, status=400)
                 all_points.append(Point(x=int(coordinates[0]), y=int(coordinates[1])))
+
+            # save point instance to DB
             Point.objects.bulk_create(all_points)
+
+            for point in all_points:
+                closest_point = point.closest_point()
+                point.closest_point.set(closest_point)
+
             return Response({"message": "Grid points processed successfully"})
     else:
         errors = serializer.errors
