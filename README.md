@@ -31,7 +31,7 @@ $ venv\Script\activate
 
 5. Install dependencies
 ```bash
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 
 6. Apply DB migrations
@@ -47,6 +47,11 @@ $ python manage.py createsuperuser
 8. Start development server
 ```bash
 $ python manage.py runserver
+```
+
+9. To access Admin Panel
+```bash
+$ http://127.0.0.1:8000/admin
 ```
 
 ## API Endpoints
